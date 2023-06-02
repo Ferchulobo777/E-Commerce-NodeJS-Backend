@@ -41,6 +41,7 @@ test('GET /carts should show the shopping cart to the user', async () => {
     const res = await request(app)
         .get('/carts')
         .set('Authorization', `Bearer ${token}`);
+        console.log(res.body)
     expect(res.status).toBe(200);
     expect(res.status).toHaveLength(1);
 });
