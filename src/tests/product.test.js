@@ -58,6 +58,12 @@ test('POST /products/:id/images should set the product images', async () => {
     expect(res.body).toHaveLength(1);
 });
 
+test('GET /products/:id should retrieve a product by id', async () => {
+    const res = await request(app)
+        .get(`/products/${productId}`)
+    expect(res.status).toBe(200);
+    expect(res.body.id).toBe(productId);
+});
 
 test('PUT /products/:id should update product fields by id ', async () => {
     const category = await Category.create({

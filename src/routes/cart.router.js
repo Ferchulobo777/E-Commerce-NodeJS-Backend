@@ -1,15 +1,16 @@
 const { getAll, create, getOne, remove, update } = require('../controllers/cart.controllers');
 const express = require('express');
+const verifyJWT = require('../utils/verifyJWT')
 
 const cartRouter = express.Router();
 
 cartRouter.route('/')
-    .get(getAll)
-    .post(create);
+    .get(verifyJWT, getAll)
+    .post(verifyJWT, create);
 
 cartRouter.route('/:id')
-    .get(getOne)
-    .delete(remove)
-    .put(update);
+    .get(verifyJWT, getOne)
+    .delete(verifyJWT, remove)
+    .put(verifyJWT, update);
 
 module.exports = cartRouter;
