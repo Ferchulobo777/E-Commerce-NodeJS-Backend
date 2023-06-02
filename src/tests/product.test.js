@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../app');
 const Category = require('../models/Category');
+const ProductImg = require('../models/ProductImg');
 require('../models');
 
 
@@ -39,6 +40,20 @@ test('POST /products, should create a product', async () => {
 
 test('GET /products should show all products', async () => {
     const res = await request(app).get('/products');
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveLength(1);
+});
+
+test('POST /products/:id/images should set the product images', async () => {
+    const image = await ProductImg.create({
+        url: "http://falseurl.com",
+        publicId: "false id",
+    })
+    const res = await request(app)
+        .post(`/products/${productId}/images`)
+        .send([image.id])
+        .set('Authorization', `Bearer ${token}`)
+    await image.destroy();
     expect(res.status).toBe(200);
     expect(res.body).toHaveLength(1);
 });

@@ -2,18 +2,18 @@ const { getAll, create, getOne, remove, update, setProductsImgs } = require('../
 const express = require('express');
 const verifyJWT = require('../utils/verifyJWT');
 
-const newsRouter = express.Router();
+const productRouter = express.Router();
 
-newsRouter.route('/')
+productRouter.route('/')
     .get(getAll)
     .post(verifyJWT, create);
 
-newsRouter.route('/:id')
+productRouter.route('/:id')
     .get(getOne)
     .delete(verifyJWT, remove)
     .put(verifyJWT, update);
 
-newsRouter.route('/:id/images')
+productRouter.route('/:id/images')
     .post(verifyJWT, setProductsImgs)
 
-module.exports = newsRouter;
+module.exports = productRouter;

@@ -1,34 +1,33 @@
 const catchError = require('../utils/catchError');
+const Cart = require('../models/Cart');
 const Product = require('../models/Product');
-const Category = require('../models/Category');
-const ProductImg = require('../models/ProductImg');
 
 const getAll = catchError(async(req, res) => {
-    const results = await Product.findAll({include:[Category, ProductImg]})
+    const results = await Cart.findAll({include:[Product]});
     return res.json(results);
 });
 
 const create = catchError(async(req, res) => {
-    const result = await Product.create(req.body);
+    const result = await Cart.create(req.body);
     return res.status(201).json(result);
 });
 
 const getOne = catchError(async(req, res) => {
     const { id } = req.params;
-    const result = await Product.findByPk(id);
+    const result = await Cart.findByPk(id);
     if(!result) return res.sendStatus(404);
     return res.json(result);
 });
 
 const remove = catchError(async(req, res) => {
     const { id } = req.params;
-    await Product.destroy({ where: {id} });
+    await Cart.destroy({ where: {id} });
     return res.sendStatus(204);
 });
 
 const update = catchError(async(req, res) => {
     const { id } = req.params;
-    const result = await Product.update(
+    const result = await Cart.update(
         req.body,
         { where: {id}, returning: true }
     );
@@ -36,20 +35,10 @@ const update = catchError(async(req, res) => {
     return res.json(result[1][0]);
 });
 
-const setProductsImgs = catchError(async(req, res) => {
-    const { id } = req.params;
-    const products = await Product.findByPk(id);
-    if(!products) return res.status(404).json({ message: "Product not found" });
-    await products.setProductImgs(req.body);
-    const images = await products.getProductImgs();
-    return res.json(images);
-})
-
 module.exports = {
     getAll,
     create,
     getOne,
     remove,
-    update,
-    setProductsImgs
+    update
 }
