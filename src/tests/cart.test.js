@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../app');
 const Product = require('../models/Product');
+require('../models');
 
 let cartId;
 let token;
@@ -23,6 +24,7 @@ test('POST /carts should create a cart for the user', async () => {
     });
     
     const cart = {
+        productId:product.id,
         quantity: 1
     };
 
@@ -41,9 +43,8 @@ test('GET /carts should show the shopping cart to the user', async () => {
     const res = await request(app)
         .get('/carts')
         .set('Authorization', `Bearer ${token}`);
-        console.log(res.body)
     expect(res.status).toBe(200);
-    expect(res.status).toHaveLength(1);
+    expect(res.body).toHaveLength(1);
 });
 test('PUT /carts/:id should update a product in the cart', async () => {
     const cartUpdate = {
