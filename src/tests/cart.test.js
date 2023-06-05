@@ -15,7 +15,7 @@ beforeAll(async () => {
     token = res.body.token;
 });
 
-test('POST /carts should create a cart for the user', async () => {
+test('POST /cart should create a cart for the user', async () => {
     const product = await Product.create({
         title:"Smart Tv Led",
         description:"televisor de alta calidad con una pantalla grande y tecnología LED. Ofrece una experiencia de visualización inmersiva con colores vibrantes y una resolución nítida. Es perfecto para disfrutar de películas, programas de televisión y juegos con una calidad de imagen impresionante.",
@@ -29,7 +29,7 @@ test('POST /carts should create a cart for the user', async () => {
     };
 
     const res = await request(app)
-        .post('/carts')
+        .post('/cart')
         .set('Authorization', `Bearer ${token}`)
         .send(cart);
 
@@ -39,28 +39,28 @@ test('POST /carts should create a cart for the user', async () => {
     expect(res.body.id).toBeDefined();
 });
 
-test('GET /carts should show the shopping cart to the user', async () => {
+test('GET /cart should show the shopping cart to the user', async () => {
     const res = await request(app)
-        .get('/carts')
+        .get('/cart')
         .set('Authorization', `Bearer ${token}`);
     expect(res.status).toBe(200);
     expect(res.body).toHaveLength(1);
 });
-test('PUT /carts/:id should update a product in the cart', async () => {
+test('PUT /cart/:id should update a product in the cart', async () => {
     const cartUpdate = {
         quantity: 2
     };
     const res = await request(app)
-        .put(`/carts/${cartId}`)
+        .put(`/cart/${cartId}`)
         .set('Authorization', `Bearer ${token}`)
         .send(cartUpdate);
     expect(res.status).toBe(200);
     expect(res.body.quantity).toBe(cartUpdate.quantity);
 });
 
-test('DELETE /carts/:id should delete a product from the cart', async () => {
+test('DELETE /cart/:id should delete a product from the cart', async () => {
     const res = await request(app)
-        .delete(`/carts/${cartId}`)
+        .delete(`/cart/${cartId}`)
         .set('Authorization', `Bearer ${token}`);
     expect(res.status).toBe(204);
 });
